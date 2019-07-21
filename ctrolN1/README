@@ -1,0 +1,62 @@
+###############################################################################
+SNMP
+
+1. Pruebas desde el cliente Exploit:
+
+# ./ctrolN1-snmp-cli.py localhost 1.3.6.1.4.1.42.1.0
+1.3.6.1.4.1.42.1.0 = 461
+
+# ./ctrolN1-snmp-cli.py localhost 1.3.6.1.4.1.42.2.0
+1.3.6.1.4.1.42.2.0 = Controladora ECD1
+
+# ./ctrolN1-snmp-cli.py localhost 1.3.6.1.4.1.42.3.0
+1.3.6.1.4.1.42.3.0 = 
+
+# ./ctrolN1-snmp-cli.py localhost 1.3.6.1.4.1.42.4.0
+1.3.6.1.4.1.42.4.0 = ECD1
+
+# ./ctrolN1-snmp-cli.py localhost 1.3.6.1.4.1.42.5.0	(ATACA)
+1.3.6.1.4.1.42.5.0 = ABF012139FFA34S1543F0KK1P19BF
+
+# ./ctrolN1-snmp-cli.py localhost 1.3.6.1.4.1.42.6.0
+1.3.6.1.4.1.42.6.0 = 5.7
+
+# ./ctrolN1-snmp-cli.py localhost 1.3.6.1.4.1.42.7.0
+1.3.6.1.4.1.42.7.0 = 
+
+# ./ctrolN1-snmp-cli.py localhost 1.3.6.1.4.1.42.8.0
+1.3.6.1.4.1.42.8.0 = 
+
+
+2. Pruebas de recepcion de traps
+
+root@risclab:~/ECD/ctrolN1# snmptrapd -f -Lo
+NET-SNMP version 5.4.3
+2014-08-27 16:06:13 risclab [UDP: [192.168.0.151]:161->[192.168.0.151]]:
+iso.3.6.1.2.1.1.3.0 = Timeticks: (286393) 0:47:43.93	iso.3.6.1.6.3.1.1.4.1.0 = OID: iso.3.6.1.4.1.42.3
+2014-08-27 16:06:16 risclab [UDP: [192.168.0.151]:161->[192.168.0.151]]:
+iso.3.6.1.2.1.1.3.0 = Timeticks: (286694) 0:47:46.94	iso.3.6.1.6.3.1.1.4.1.0 = OID: iso.3.6.1.4.1.42.3
+^C2014-08-27 16:06:16 NET-SNMP version 5.4.3 Stopped.
+
+
+3. Pruebas snmpwalk:
+
+# snmpwalk -m MY-MIB -v 2c -c public localhost 1.3.6.1.4.1.42.1.0
+MY-MIB::testCount.0 = INTEGER: 56
+
+# snmpwalk -m MY-MIB -v 2c -c public localhost 1.3.6.1.4.1.42.2.0
+MY-MIB::testDescription.0 = STRING: "Controladora ECD1"
+
+# snmpwalk -m MY-MIB -v 2c -c public localhost 1.3.6.1.4.1.42.3.0
+MY-MIB::testTrap.0 = No Such Object available on this agent at this OID
+
+# snmpwalk -m MY-MIB -v 2c -c public localhost 1.3.6.1.4.1.42.4.0 (ATACA)
+MY-MIB::myCompany.4.0 = STRING: "ECD1"
+
+# snmpwalk -m MY-MIB -v 2c -c public localhost 1.3.6.1.4.1.42.5.0 (ATACA)
+MY-MIB::myCompany.5.0 = STRING: "ABF012139FFA34S1543F0KK1P19BF"
+
+# snmpwalk -m MY-MIB -v 2c -c public localhost 1.3.6.1.4.1.42.6.0
+MY-MIB::myCompany.6.0 = No more variables left in this MIB View (It is past the end of the $
+
+

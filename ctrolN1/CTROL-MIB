@@ -1,0 +1,50 @@
+CTROL-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+        OBJECT-TYPE, Integer32, NOTIFICATION-TYPE, enterprises
+                     FROM SNMPv2-SMI
+;
+
+myCompany       OBJECT IDENTIFIER ::= {enterprises 42}
+
+testCount OBJECT-TYPE
+    SYNTAX Integer32
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION "A sample count of something."
+    ::= {myCompany 1}
+
+tipoDisp OBJECT-TYPE
+    SYNTAX OCTET STRING
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION "A description of something"
+    ::= {myCompany 2}
+
+testTrap NOTIFICATION-TYPE
+    STATUS current
+    DESCRIPTION "Test notification"
+    ::= {myCompany 3}
+
+modeloDisp OBJECT-TYPE
+    SYNTAX OCTET STRING
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION "Descripcion del controlador"
+    ::= {myCompany 4}
+
+segClave OBJECT-TYPE
+    SYNTAX OCTET STRING
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION "Clave de seguridad para TXs."
+    ::= {myCompany 5}
+
+verSW OBJECT-TYPE
+    SYNTAX OCTET STRING
+    MAX-ACCESS read-only
+    STATUS current
+    DESCRIPTION "Version de software"
+    ::= {myCompany 6}
+
+END
